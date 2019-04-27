@@ -3,9 +3,11 @@ import './FormTodo.css';
 
 interface ToDo {
     id: number,
-    todo: string
+    todo: string,
+    dueDate: Date,
+    completed: Boolean,
+    completedDate?: Date
 }
-
 interface FormTodoProps {
     action: string,
     id: number

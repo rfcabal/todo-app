@@ -2,10 +2,15 @@ import React from 'react';
 import './CreateEdit.css';
 import './FormTodo/FormTodo'
 import FormTodo from "./FormTodo/FormTodo";
+import {Link} from "react-router-dom";
+import ListTodo from "./ListTodo/ListTodo";
 
 interface ToDo {
     id: number,
-    todo: string
+    todo: string,
+    dueDate: Date,
+    completed: Boolean,
+    completedDate?: Date
 }
 
 interface CreateEditState {
@@ -14,11 +19,11 @@ interface CreateEditState {
 }
 
 const todo: ToDo[] = [
-    {id: 1, todo: "fix routes"},
-    {id: 2, todo: "do localstorage"}
+    {id: 1, todo: "fix routes", dueDate: new Date(2019, 3, 30), completed: false},
+    {id: 2, todo: "do localstorage", dueDate: new Date(2019, 3, 30), completed: false}
 ]
 
-class CreateEdit extends React.PureComponent<{ location: any }, CreateEditState> {
+class CreateEdit extends React.PureComponent<{ match: any }, CreateEditState> {
 
     constructor(props: any) {
         super(props)
@@ -29,22 +34,17 @@ class CreateEdit extends React.PureComponent<{ location: any }, CreateEditState>
     }
 
     componentDidMount() {
-        const {location: {search}} = this.props,
-            params = new URLSearchParams(search),
-            action = params.get('action'),
-            id = params.get('id');
-
-        this.updateCurrentAction({
-            currentAction: action ? action : 'list',
-            currentId: id ? parseInt(id) : 0
-        })
+        const {match: {params: {action, id}}} = this.props;
+        if (action || id) {
+            this.updateStates(action, id)
+        }
     }
 
-    updateCurrentAction(params: CreateEditState) {
-        this.setState({
-            currentAction: params.currentAction,
-            currentId: params.currentId ? params.currentId : 0
-        })
+    componentDidUpdate(prevProps: any) {
+        const {match: {params: {action, id}}} = this.props
+        if (prevProps.match.params.action !== action || prevProps.match.params.id !== id) {
+            this.updateStates(action, id)
+        }
     }
 
     findTodo(id: number) {
@@ -63,15 +63,23 @@ class CreateEdit extends React.PureComponent<{ location: any }, CreateEditState>
         return todoHash[id];
     }
 
+    updateStates(action: any, id: any) {
+        this.setState({
+            currentAction: action ? action : 'list',
+            currentId: id ? id : 0
+        })
+    }
+
     render() {
         const {currentId, currentAction} = this.state
+
         return (
             <div>
                 <div>
                     <nav>
                         <ul>
                             <li>
-                                <a href="?action=create">Create</a>
+                                <Link to="/create-edit/create">Create</Link>
                             </li>
                         </ul>
                     </nav>
@@ -79,31 +87,7 @@ class CreateEdit extends React.PureComponent<{ location: any }, CreateEditState>
                 {currentAction !== 'list' ? (
                     <FormTodo action={currentAction} id={currentId} data={this.findTodo(currentId)}/>
                 ) : (
-                    <div>
-                        <h3>List of todo</h3>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Todo</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {
-                                todo.map((item: ToDo) => {
-                                    return (
-                                        <tr key={item.id}>
-                                            <td>{item.id}</td>
-                                            <td>{item.todo}</td>
-                                            <td><a href={`?action=edit&id=${item.id}`}>edit</a> | delete</td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                            </tbody>
-                        </table>
-                    </div>
+                    <ListTodo todoList={todo}/>
                 )
 
                 }

@@ -5,8 +5,6 @@ import CompletedList from './views/CompletedList/CompletedList'
 import CreateEdit from './views/CreateEdit/CreateEdit'
 import TodoTrash from './views/TodoTrash/TodoTrash'
 
-
-// FIXME: Fix routes with query params should be with Link not with Href
 const routes = {
     home: "/",
     createEdit: "/create-edit",
@@ -36,7 +34,7 @@ const AppRouter = () => {
                 </nav>
             </div>
             <Route path={routes.home} exact component={Home}/>
-            <Route path={routes.createEdit} component={CreateEdit}/>
+            <Route path={`${routes.createEdit}/:action?/:id?`} component={CreateEdit}/>
             <Route path={routes.completeList} component={CompletedList}/>
             <Route path={routes.todoTrash} component={TodoTrash}/>
         </Router>
