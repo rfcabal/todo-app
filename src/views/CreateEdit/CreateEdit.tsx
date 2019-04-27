@@ -1,18 +1,16 @@
 import React from 'react';
 import './CreateEdit.css';
-import {BrowserRouter as Router, Link, Route} from "react-router-dom";
-import CreateTodo from './CreateTodo/CreateTodo'
-import EditTodo from './EditTodo/EditTodo'
+import './FormTodo/FormTodo'
+import FormTodo from "./FormTodo/FormTodo";
 
 interface ToDo {
     id: number,
     todo: string
 }
 
-
-const routes = {
-    create: "/create-edit/create",
-    edit: "/create-edit/edit"
+interface CreateEditState {
+    currentAction: string;
+    currentId: number
 }
 
 const todo: ToDo[] = [
@@ -20,51 +18,96 @@ const todo: ToDo[] = [
     {id: 2, todo: "do localstorage"}
 ]
 
-class CreateEdit extends React.PureComponent<{}, {}> {
+class CreateEdit extends React.PureComponent<{ location: any }, CreateEditState> {
+
+    constructor(props: any) {
+        super(props)
+        this.state = {
+            currentAction: 'list',
+            currentId: 0
+        }
+    }
 
     componentDidMount() {
+        const {location: {search}} = this.props,
+            params = new URLSearchParams(search),
+            action = params.get('action'),
+            id = params.get('id');
+
+        this.updateCurrentAction({
+            currentAction: action ? action : 'list',
+            currentId: id ? parseInt(id) : 0
+        })
+    }
+
+    updateCurrentAction(params: CreateEditState) {
+        this.setState({
+            currentAction: params.currentAction,
+            currentId: params.currentId ? params.currentId : 0
+        })
+    }
+
+    findTodo(id: number) {
+
+        let todoHash: any[] = [];
+
+        if (id === 0) {
+            return undefined
+        }
+
+        todo.map((item: ToDo) => {
+            todoHash[item.id] = item.todo
+            return null
+        })
+
+        return todoHash[id];
     }
 
     render() {
+        const {currentId, currentAction} = this.state
         return (
-            <Router>
+            <div>
                 <div>
                     <nav>
                         <ul>
                             <li>
-                                <Link to={routes.create}>Create</Link>
+                                <a href="?action=create">Create</a>
                             </li>
                         </ul>
                     </nav>
                 </div>
-                <div>
-                    <h3>List of todo</h3>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Todo</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            todo.map((item: ToDo) => {
-                                return (
-                                    <tr key={item.id}>
-                                        <td>{item.id}</td>
-                                        <td>{item.todo}</td>
-                                        <td><Link to={`${routes.edit}/${item.id}`}>edit</Link> | delete</td>
-                                    </tr>
-                                )
-                            })
-                        }
-                        </tbody>
-                    </table>
-                </div>
-                <Route path={routes.create} exact component={CreateTodo}/>
-                <Route path={`${routes.edit}/:todoId`} exact component={EditTodo}/>
-            </Router>
+                {currentAction !== 'list' ? (
+                    <FormTodo action={currentAction} id={currentId} data={this.findTodo(currentId)}/>
+                ) : (
+                    <div>
+                        <h3>List of todo</h3>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Todo</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {
+                                todo.map((item: ToDo) => {
+                                    return (
+                                        <tr key={item.id}>
+                                            <td>{item.id}</td>
+                                            <td>{item.todo}</td>
+                                            <td><a href={`?action=edit&id=${item.id}`}>edit</a> | delete</td>
+                                        </tr>
+                                    )
+                                })
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                )
+
+                }
+            </div>
         );
     }
 
