@@ -25,7 +25,6 @@ class TodoTrash extends React.Component<any, { todoList: ToDo[] }> {
     }
 
     handleTodoListChange(id: number, action: string) {
-        console.log(id, action)
         if (action === "delete") {
             const {todoList} = this.state,
                 todoIndex = todoList.findIndex((item: ToDo) => item.id === id);

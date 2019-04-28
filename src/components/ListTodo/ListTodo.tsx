@@ -10,10 +10,6 @@ interface ListTodoProps {
 
 class ListTodo extends React.Component<ListTodoProps> {
 
-    componentDidUpdate() {
-        console.log(this.props)
-    }
-
     handleTodoListChange(id: number, action: string) {
         this.props.onChangeTodoList(id, action);
     }

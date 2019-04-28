@@ -72,7 +72,6 @@ class FormTodo extends React.Component<FormTodoProps, any> {
             localStorage.setItem("todo", JSON.stringify(currentTodos));
             this.props.history.push('/')
         } else {
-            console.log("you are updating")
             const todoIndex = currentTodos.findIndex((todo: ToDo) => todo.id === id)
             currentTodos[todoIndex] = this.state;
             localStorage.setItem("todo", JSON.stringify(currentTodos));
