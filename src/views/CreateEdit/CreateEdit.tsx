@@ -1,46 +1,38 @@
 import React from 'react';
 import './CreateEdit.css';
-import './FormTodo/FormTodo'
-import FormTodo from "./FormTodo/FormTodo";
+import '../../components/FormTodo/FormTodo'
+import FormTodo from "../../components/FormTodo/FormTodo";
 import {Link} from "react-router-dom";
-import ListTodo from "./ListTodo/ListTodo";
-
-interface ToDo {
-    id: number,
-    todo: string,
-    dueDate: Date,
-    completed: Boolean,
-    completedDate?: Date
-}
+import ListTodo from "../../components/ListTodo/ListTodo";
 
 interface CreateEditState {
-    currentAction: string;
-    currentId: number
+    currentAction: string,
+    currentId: number,
+    todoList: ToDo[]
 }
 
-const todo: ToDo[] = [
-    {id: 1, todo: "fix routes", dueDate: new Date(2019, 3, 30), completed: false},
-    {id: 2, todo: "do localstorage", dueDate: new Date(2019, 3, 30), completed: false}
-]
-
-class CreateEdit extends React.PureComponent<{ match: any }, CreateEditState> {
+class CreateEdit extends React.Component<{ match: any }, CreateEditState> {
 
     constructor(props: any) {
         super(props)
+        this.handleTodoListChange = this.handleTodoListChange.bind(this)
         this.state = {
             currentAction: 'list',
-            currentId: 0
+            currentId: 0,
+            todoList: []
         }
     }
 
     componentDidMount() {
         const {match: {params: {action, id}}} = this.props;
+        const stringTodo = localStorage.getItem("todo")
+        this.updateTodoList(stringTodo ? JSON.parse(stringTodo) : [])
         if (action || id) {
             this.updateStates(action, id)
         }
     }
 
-    componentDidUpdate(prevProps: any) {
+    componentDidUpdate(prevProps: any, prevState: CreateEditState) {
         const {match: {params: {action, id}}} = this.props
         if (prevProps.match.params.action !== action || prevProps.match.params.id !== id) {
             this.updateStates(action, id)
@@ -55,7 +47,7 @@ class CreateEdit extends React.PureComponent<{ match: any }, CreateEditState> {
             return undefined
         }
 
-        todo.map((item: ToDo) => {
+        this.state.todoList.map((item: ToDo) => {
             todoHash[item.id] = item.todo
             return null
         })
@@ -70,8 +62,38 @@ class CreateEdit extends React.PureComponent<{ match: any }, CreateEditState> {
         })
     }
 
+    updateTodoList(todoList: ToDo[]) {
+        this.setState({
+            todoList
+        })
+    }
+
+    handleTodoListChange(id: Number, action: string) {
+
+        if (action === "toTrash") {
+            const {todoList} = this.state,
+                todoIndex = todoList.findIndex((item: ToDo) => item.id === id),
+                trash = localStorage.getItem("trash");
+            let trashToArray = trash ? JSON.parse(trash) : [],
+                confirmDelete: boolean = window.confirm("Are you sure?")
+
+            if (confirmDelete && todoIndex !== -1) {
+                trashToArray.push(todoList[todoIndex]);
+                todoList.splice(todoIndex, 1);
+
+                localStorage.setItem("todo", JSON.stringify(todoList));
+                localStorage.setItem('trash', JSON.stringify(trashToArray));
+
+                this.updateTodoList(todoList)
+
+                alert(`you deleted the todo id: ${id}`);
+            }
+        }
+
+    }
+
     render() {
-        const {currentId, currentAction} = this.state
+        const {currentId, currentAction, todoList} = this.state
 
         return (
             <div>
@@ -84,10 +106,10 @@ class CreateEdit extends React.PureComponent<{ match: any }, CreateEditState> {
                         </ul>
                     </nav>
                 </div>
-                {currentAction !== 'list' ? (
-                    <FormTodo action={currentAction} id={currentId} data={this.findTodo(currentId)}/>
+                {currentAction === 'list' ? (
+                    <ListTodo todoList={todoList} view={"CreateEdit"} onChangeTodoList={this.handleTodoListChange}/>
                 ) : (
-                    <ListTodo todoList={todo}/>
+                    <FormTodo action={currentAction} id={currentId} data={this.findTodo(currentId)}/>
                 )
 
                 }

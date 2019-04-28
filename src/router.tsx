@@ -13,6 +13,15 @@ const routes = {
 }
 
 const AppRouter = () => {
+
+    const todo: ToDo[] = [
+        {id: 1, todo: "fix routes", dueDate: "2019-04-27", completed: false},
+        {id: 2, todo: "do localstorage", dueDate: "2019-05-25", completed: false}
+    ];
+
+    localStorage.setItem("todo", JSON.stringify(todo));
+    localStorage.setItem("trash", "[]");
+
     return (
         <Router>
             <div>
