@@ -3,5 +3,5 @@ interface ToDo {
     todo: string,
     dueDate: string,
     completed: boolean,
-    completedDate?: Date
+    completedDate?: string
 }

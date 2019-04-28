@@ -39,26 +39,10 @@ class CreateEdit extends React.Component<{ match: any }, CreateEditState> {
         }
     }
 
-    findTodo(id: number) {
-
-        let todoHash: any[] = [];
-
-        if (id === 0) {
-            return undefined
-        }
-
-        this.state.todoList.map((item: ToDo) => {
-            todoHash[item.id] = item.todo
-            return null
-        })
-
-        return todoHash[id];
-    }
-
     updateStates(action: any, id: any) {
         this.setState({
             currentAction: action ? action : 'list',
-            currentId: id ? id : 0
+            currentId: id ? parseInt(id) : 0
         })
     }
 
@@ -109,7 +93,7 @@ class CreateEdit extends React.Component<{ match: any }, CreateEditState> {
                 {currentAction === 'list' ? (
                     <ListTodo todoList={todoList} view={"CreateEdit"} onChangeTodoList={this.handleTodoListChange}/>
                 ) : (
-                    <FormTodo action={currentAction} id={currentId} data={this.findTodo(currentId)}/>
+                    <FormTodo action={currentAction} id={currentId}/>
                 )
 
                 }
