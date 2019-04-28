@@ -26,6 +26,20 @@ class TodoTrash extends React.Component<any, { todoList: ToDo[] }> {
 
     handleTodoListChange(id: number, action: string) {
         console.log(id, action)
+        if (action === "delete") {
+            const {todoList} = this.state,
+                todoIndex = todoList.findIndex((item: ToDo) => item.id === id);
+            let confirmDelete: boolean = window.confirm("Are you sure?")
+
+            if (confirmDelete && todoIndex !== -1) {
+                todoList.splice(todoIndex, 1);
+                localStorage.setItem('trash', JSON.stringify(todoList));
+
+                this.updateTodoList(todoList)
+
+                alert(`you deleted the todo id: ${id}`);
+            }
+        }
     }
 
     render() {
