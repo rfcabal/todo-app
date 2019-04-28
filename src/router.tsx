@@ -5,12 +5,18 @@ import CompletedList from './views/CompletedList/CompletedList'
 import CreateEdit from './views/CreateEdit/CreateEdit'
 import TodoTrash from './views/TodoTrash/TodoTrash'
 
-const routes = {
-    home: "/",
-    createEdit: "/create-edit",
-    completeList: "/completed-list",
-    todoTrash: "/todo-trash"
+interface Routes {
+    name: string,
+    path: string,
+    component: string,
 }
+
+const routes: Routes[] = [
+    {name: "Home", path: "/", component: "Home"},
+    {name: "Create/Edit", path: "/create-edit", component: "CreateEdit"},
+    {name: "Completed List", path: "/completed-list", component: "CompletedList"},
+    {name: "Trash", path: "/todo-trash", component: "TodoTrash"},
+]
 
 const AppRouter = () => {
 
@@ -27,25 +33,22 @@ const AppRouter = () => {
             <div>
                 <nav>
                     <ul>
-                        <li>
-                            <Link to={routes.home}>Home</Link>
-                        </li>
-                        <li>
-                            <Link to={routes.createEdit}>Create/Edit</Link>
-                        </li>
-                        <li>
-                            <Link to={routes.completeList}>Completed List</Link>
-                        </li>
-                        <li>
-                            <Link to={routes.todoTrash}>Trash</Link>
-                        </li>
+                        {
+                            routes.map((route: Routes) => {
+                                return (
+                                    <li key={route.component}>
+                                        <Link to={route.path}>{route.name}</Link>
+                                    </li>
+                                )
+                            })
+                        }
                     </ul>
                 </nav>
             </div>
-            <Route path={routes.home} exact component={Home}/>
-            <Route path={`${routes.createEdit}/:action?/:id?`} component={CreateEdit}/>
-            <Route path={routes.completeList} component={CompletedList}/>
-            <Route path={routes.todoTrash} component={TodoTrash}/>
+            <Route path={routes[0].path} exact component={Home}/>
+            <Route path={`${routes[1].path}/:action?/:id?`} component={CreateEdit}/>
+            <Route path={routes[2].path} component={CompletedList}/>
+            <Route path={routes[3].path} component={TodoTrash}/>
         </Router>
     )
 }

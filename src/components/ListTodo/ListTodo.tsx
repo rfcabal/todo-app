@@ -61,7 +61,8 @@ class ListTodo extends React.Component<ListTodoProps> {
                     </tbody>
                 </table>
             </div>
-        ) : (<div>{view === "TodoTrash" ? "Trash can is empty" : "You haven't added a todo yet."}</div>);
+        ) : (
+            <div>{view === "TodoTrash" ? "Trash can is empty" : view === "CompletedList" ? "You haven't completed todos yet." : "You haven't added a todo yet."}</div>);
     }
 
 }

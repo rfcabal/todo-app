@@ -34,12 +34,10 @@ class FormTodo extends React.Component<FormTodoProps, any> {
         const {action, id} = this.props
         const stringTodo = localStorage.getItem("todo")
         this.currentTodos = stringTodo ? JSON.parse(stringTodo) : []
-
         if (action === "edit") {
             const currentTodo = this.currentTodos.find(todo => todo.id === id);
             if (currentTodo) this.updateTodo(currentTodo);
         }
-
     }
 
     updateTodo(todo: ToDo) {
