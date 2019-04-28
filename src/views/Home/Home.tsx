@@ -19,13 +19,26 @@ class Home extends React.Component<any, { todoList: ToDo[] }> {
     }
 
     updateTodoList(todoList: ToDo[]) {
+        const filterCompleted = todoList.filter(todo => !todo.completed);
         this.setState({
-            todoList
+            todoList: filterCompleted
         })
     }
 
     handleTodoListChange(id: number, action: string) {
-        console.log(id, action)
+        if (action === "completed") {
+            const {todoList} = this.state,
+                todoIndex = todoList.findIndex((item: ToDo) => item.id === id),
+                stringTodoList = localStorage.getItem("todo")
+            let todoListStorage: ToDo[] = stringTodoList ? JSON.parse(stringTodoList) : [];
+            todoListStorage[todoIndex].completed = !todoListStorage[todoIndex].completed;
+
+            localStorage.setItem("todo", JSON.stringify(todoListStorage));
+            console.log(todoListStorage)
+            this.updateTodoList(todoListStorage)
+
+            alert(`Your todo ${id} is ${todoList[todoIndex].completed ? "Completed" : "Uncompleted"}`);
+        }
     }
 
     render() {

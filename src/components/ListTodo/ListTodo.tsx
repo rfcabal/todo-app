@@ -38,7 +38,8 @@ class ListTodo extends React.Component<ListTodoProps> {
                             return (
                                 <tr key={item.id}>
                                     <td><input type="checkbox" value={item.id} checked={item.completed}
-                                               disabled={view === "CreateEdit"}/></td>
+                                               disabled={view === "CreateEdit"}
+                                               onChange={() => this.handleTodoListChange(item.id, "completed")}/></td>
                                     <td>{item.todo}</td>
                                     {
                                         view === "CreateEdit" ? (
