@@ -36,7 +36,9 @@ class ListTodo extends React.Component<ListTodoProps> {
                         {(view !== "Home" && view !== "CompletedList") ? (
                             <th className="text-center">Completed</th>) : (<th>{''}</th>)}
                         <th>Todo</th>
-                        {(view !== "Home" && view !== "CompletedList") ? (<th>Actions</th>) : null}
+                        <th>Due Date</th>
+                        {view === "CompletedList" ? (<th>Completed Date</th>) : null}
+                        {view !== "Home" && view !== "CompletedList" ? (<th>Actions</th>) : null}
                     </tr>
                     </thead>
                     <tbody>
@@ -53,6 +55,8 @@ class ListTodo extends React.Component<ListTodoProps> {
                                         </div>
                                     </td>
                                     <td>{item.todo}</td>
+                                    <td>{item.dueDate}</td>
+                                    {view === "CompletedList" ? (<td>{item.completedDate}</td>) : null}
                                     {
                                         view === "CreateEdit" ? (
                                             <td>
@@ -100,7 +104,7 @@ class ListTodo extends React.Component<ListTodoProps> {
                 <h3>{view === "CompletedList" ? "Completed -" : view === "TodoTrash" ? "Trash -" : null} Todo List</h3>
                 <hr/>
                 <Alert
-                    variant="warning">{view === "TodoTrash" ? "Trash can is empty" : view === "CompletedList" ? "You haven't completed todos yet." : "You haven't added a todo yet."}</Alert>
+                    variant="warning">{view === "TodoTrash" ? "Trash can is empty" : view === "CompletedList" ? "You haven't completed todos yet." : "All clear, you don't have pending todos."}</Alert>
             </div>
         );
     }

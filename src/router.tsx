@@ -36,19 +36,22 @@ const AppRouter = () => {
                     <Col>
                     </Col>
                     <Col md={8}>
-                        <Navbar bg="dark" variant="dark">
+                        <Navbar bg="dark" variant="dark" expand="lg">
                             <Navbar.Brand>Todo List</Navbar.Brand>
-                            <Nav>
-                                {
-                                    routes.map((route: Routes) => {
-                                        return (
-                                            <Nav.Link key={route.component}>
-                                                <Link to={route.path}>{route.name}</Link>
-                                            </Nav.Link>
-                                        )
-                                    })
-                                }
-                            </Nav>
+                            <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+                            <Navbar.Collapse id="basic-navbar-nav">
+                                <Nav className="mr-auto">
+                                    {
+                                        routes.map((route: Routes) => {
+                                            return (
+                                                <Nav.Link key={route.component}>
+                                                    <Link to={route.path}>{route.name}</Link>
+                                                </Nav.Link>
+                                            )
+                                        })
+                                    }
+                                </Nav>
+                            </Navbar.Collapse>
                         </Navbar>
                     </Col>
                     <Col>
