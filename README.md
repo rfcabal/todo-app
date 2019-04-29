@@ -16,7 +16,7 @@
 - List of Pending Todos.
 - Create and Edit Todos.
 - List of Completed Todos.
-- Trash can to restore todos or permanently deleted it. 
+- Trash can to restore todos or permanently delete it. 
 
 
 ## To Install
