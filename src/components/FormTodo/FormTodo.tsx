@@ -2,7 +2,9 @@ import React from 'react';
 import './FormTodo.css';
 import {withRouter} from 'react-router-dom'
 import {RouteComponentProps} from "react-router";
+import {Button, Form} from 'react-bootstrap';
 import utils from "../../utils/utils"
+import MockService from "../../services/mockService";
 
 type PathParms = {
     history: any
@@ -65,18 +67,8 @@ class FormTodo extends React.Component<FormTodoProps, any> {
 
     handleSubmit(event: any) {
         const {action, id} = this.props
-        const stringTodo = localStorage.getItem("todo")
-        let currentTodos = stringTodo ? JSON.parse(stringTodo) : [];
-        if (action === "create") {
-            currentTodos = [...currentTodos, this.state]
-            localStorage.setItem("todo", JSON.stringify(currentTodos));
-            this.props.history.push('/')
-        } else {
-            const todoIndex = currentTodos.findIndex((todo: ToDo) => todo.id === id)
-            currentTodos[todoIndex] = this.state;
-            localStorage.setItem("todo", JSON.stringify(currentTodos));
-            alert(`todo id: ${id} has been updated.`)
-        }
+        MockService(id, action, this.state)
+        if (action === "create") this.props.history.push('/')
         event.preventDefault();
     }
 
@@ -85,16 +77,42 @@ class FormTodo extends React.Component<FormTodoProps, any> {
         const {action, id} = this.props
 
         return (
-            <form onSubmit={this.handleSubmit}>
-                <div>
-                    <h3>{action} {id > 0 ? ` - id: ${id}` : null}</h3>
-                    <label>Todo</label>
-                    <input id="todo" type="text" value={this.state.todo} onChange={this.handleChange}/>
-                    <label>Due Date</label>
-                    <input id="dueDate" type="date" value={this.state.dueDate} onChange={this.handleChange}/>
-                    <button type="submit">{action === "create" ? "Create" : "Save"}</button>
-                </div>
-            </form>
+            <div>
+                <h3>{action === "create" ? "Create Todo" : `Modify Todo - id: ${id}`}</h3>
+                <Form onSubmit={this.handleSubmit}>
+                    <Form.Row>
+                        <Form.Group>
+                            <Form.Label>
+                                Todo
+                            </Form.Label>
+                            <Form.Control
+                                required
+                                id="todo"
+                                type="text"
+                                defaultValue={this.state.todo}
+                                onChange={this.handleChange}
+                                placeholder="Do my homework..."
+                            />
+                        </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
+                        <Form.Group>
+                            <Form.Label>
+                                Due Date
+                            </Form.Label>
+                            <Form.Control
+                                required
+                                id="dueDate"
+                                type="date"
+                                defaultValue={this.state.dueDate}
+                                onChange={this.handleChange}
+                                placeholder="Do my homework..."
+                            />
+                        </Form.Group>
+                    </Form.Row>
+                    <Button type="submit">{action === "create" ? "Create" : "Save"}</Button>
+                </Form>
+            </div>
         );
     }
 

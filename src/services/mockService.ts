@@ -1,10 +1,22 @@
 import utils from "../utils/utils";
 
-function MockService(id: number, action: string) {
+function MockService(id: number, action: string, newTodo?: any) {
 
     const stringTodo = localStorage.getItem("todo"),
         stringTrash = localStorage.getItem("trash"),
         services = {
+            create: () => {
+                let currentTodos = stringTodo ? JSON.parse(stringTodo) : [];
+                currentTodos = [...currentTodos, newTodo]
+                localStorage.setItem("todo", JSON.stringify(currentTodos));
+            },
+            update: () => {
+                let currentTodos = stringTodo ? JSON.parse(stringTodo) : [];
+                const todoIndex = currentTodos.findIndex((todo: ToDo) => todo.id === id)
+                currentTodos[todoIndex] = newTodo;
+                localStorage.setItem("todo", JSON.stringify(currentTodos));
+                alert(`todo id: ${id} has been updated.`)
+            },
             completed: () => {
                 const now = utils.parseDate(new Date());
                 const stringTodoList = localStorage.getItem("todo")
@@ -23,7 +35,6 @@ function MockService(id: number, action: string) {
                 return todoListStorage
             },
             toTrash: () => {
-
                 let todoList = stringTodo ? JSON.parse(stringTodo) : [],
                     trashTodoList = stringTrash ? JSON.parse(stringTrash) : [],
                     confirmDelete: boolean = window.confirm("Are you sure?")
@@ -40,7 +51,6 @@ function MockService(id: number, action: string) {
                     alert(`you have sent to the trash todo id: ${id}`);
 
                     return todoList;
-
                 }
             },
             restore: () => {
@@ -75,6 +85,10 @@ function MockService(id: number, action: string) {
 
     if (action === "completed") {
         return services.completed()
+    } else if (action === "create") {
+        return services.create()
+    } else if (action === "edit") {
+        return services.update()
     } else if (action === "toTrash") {
         return services.toTrash()
     } else if (action === "restore") {
