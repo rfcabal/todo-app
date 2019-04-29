@@ -1,7 +1,7 @@
 import React from 'react';
 import './Home.css';
 import ListTodo from "../../components/ListTodo/ListTodo";
-import utils from "../../utils/utils"
+import MockService from "../../services/mockService";
 
 class Home extends React.Component<any, { todoList: ToDo[] }> {
 
@@ -27,20 +27,8 @@ class Home extends React.Component<any, { todoList: ToDo[] }> {
     }
 
     handleTodoListChange(id: number, action: string) {
-        if (action === "completed") {
-            const now = utils.parseDate(new Date());
-            const stringTodoList = localStorage.getItem("todo")
-
-            let todoListStorage: ToDo[] = stringTodoList ? JSON.parse(stringTodoList) : [];
-            const todoIndex = todoListStorage.findIndex((item: ToDo) => item.id === id)
-            todoListStorage[todoIndex].completed = !todoListStorage[todoIndex].completed;
-            if (todoListStorage[todoIndex].completed) todoListStorage[todoIndex].completedDate = now
-
-            localStorage.setItem("todo", JSON.stringify(todoListStorage));
-            this.updateTodoList(todoListStorage)
-
-            alert(`Your todo ${id} is ${todoListStorage[todoIndex].completed ? "Completed" : "Uncompleted"}`);
-        }
+        const newState = MockService(id, action);
+        this.updateTodoList(newState);
     }
 
     render() {

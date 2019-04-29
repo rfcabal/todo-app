@@ -5,6 +5,7 @@ import FormTodo from "../../components/FormTodo/FormTodo";
 import {withRouter} from "react-router-dom";
 import {Button} from 'react-bootstrap';
 import {RouteComponentProps} from "react-router";
+import MockService from './../../services/mockService'
 import ListTodo from "../../components/ListTodo/ListTodo";
 
 type PathParms = {
@@ -66,28 +67,9 @@ class CreateEdit extends React.Component<CreateEditProps, CreateEditState> {
         this.props.history.push(path)
     }
 
-    handleTodoListChange(id: Number, action: string) {
-
-        if (action === "toTrash") {
-            const {todoList} = this.state,
-                todoIndex = todoList.findIndex((item: ToDo) => item.id === id),
-                trash = localStorage.getItem("trash");
-            let trashToArray = trash ? JSON.parse(trash) : [],
-                confirmDelete: boolean = window.confirm("Are you sure?")
-
-            if (confirmDelete && todoIndex !== -1) {
-                trashToArray.push(todoList[todoIndex]);
-                todoList.splice(todoIndex, 1);
-
-                localStorage.setItem("todo", JSON.stringify(todoList));
-                localStorage.setItem('trash', JSON.stringify(trashToArray));
-
-                this.updateTodoList(todoList)
-
-                alert(`you deleted the todo id: ${id}`);
-            }
-        }
-
+    handleTodoListChange(id: number, action: string) {
+        const newState = MockService(id, action);
+        this.updateTodoList(newState);
     }
 
     render() {
