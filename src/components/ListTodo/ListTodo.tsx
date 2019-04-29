@@ -29,13 +29,14 @@ class ListTodo extends React.Component<ListTodoProps> {
 
         return todoList && todoList.length > 0 ? (
             <div>
-                <h3>Todo List</h3>
+                <h3>{view === "CompletedList" ? "Completed -" : view === "TodoTrash" ? "Trash -" : null} Todo List</h3>
                 <Table responsive hover size="sm">
                     <thead>
                     <tr>
-                        <th>Mark as complete</th>
+                        {(view !== "Home" && view !== "CompletedList") ? (
+                            <th className="text-center">Completed</th>) : (<th>{''}</th>)}
                         <th>Todo</th>
-                        <th>Actions</th>
+                        {(view !== "Home" && view !== "CompletedList") ? (<th>Actions</th>) : null}
                     </tr>
                     </thead>
                     <tbody>
@@ -43,9 +44,13 @@ class ListTodo extends React.Component<ListTodoProps> {
                         todoList.map((item: ToDo) => {
                             return (
                                 <tr key={item.id}>
-                                    <td><input type="checkbox" value={item.id} checked={item.completed}
-                                               disabled={view === "CreateEdit"}
-                                               onChange={() => this.handleTodoListChange(item.id, "completed")}/>
+                                    <td>
+                                        <div className="i-check">
+                                            <input type="checkbox" value={item.id} checked={item.completed}
+                                                   disabled={view === "CreateEdit"}
+                                                   onChange={() => this.handleTodoListChange(item.id, "completed")}/>
+                                            <label>{''}</label>
+                                        </div>
                                     </td>
                                     <td>{item.todo}</td>
                                     {
@@ -81,7 +86,7 @@ class ListTodo extends React.Component<ListTodoProps> {
                                                     </Button>
                                                 </ButtonGroup>
                                             </td>)
-                                        ) : (<td>Other Actions</td>)
+                                        ) : null
                                     }
                                 </tr>
                             )
@@ -92,7 +97,8 @@ class ListTodo extends React.Component<ListTodoProps> {
             </div>
         ) : (
             <div>
-                <h3>Todo List</h3>
+                <h3>{view === "CompletedList" ? "Completed -" : view === "TodoTrash" ? "Trash -" : null} Todo List</h3>
+                <hr/>
                 <Alert
                     variant="warning">{view === "TodoTrash" ? "Trash can is empty" : view === "CompletedList" ? "You haven't completed todos yet." : "You haven't added a todo yet."}</Alert>
             </div>
