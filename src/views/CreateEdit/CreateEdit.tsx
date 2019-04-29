@@ -2,8 +2,18 @@ import React from 'react';
 import './CreateEdit.css';
 import '../../components/FormTodo/FormTodo'
 import FormTodo from "../../components/FormTodo/FormTodo";
-import {Link} from "react-router-dom";
+import {withRouter} from "react-router-dom";
+import {Button} from 'react-bootstrap';
+import {RouteComponentProps} from "react-router";
 import ListTodo from "../../components/ListTodo/ListTodo";
+
+type PathParms = {
+    history: any
+}
+
+type CreateEditProps = RouteComponentProps<PathParms> & {
+    match: any
+}
 
 interface CreateEditState {
     currentAction: string,
@@ -11,7 +21,7 @@ interface CreateEditState {
     todoList: ToDo[]
 }
 
-class CreateEdit extends React.Component<{ match: any }, CreateEditState> {
+class CreateEdit extends React.Component<CreateEditProps, CreateEditState> {
 
     constructor(props: any) {
         super(props)
@@ -52,6 +62,10 @@ class CreateEdit extends React.Component<{ match: any }, CreateEditState> {
         })
     }
 
+    goTo(path: string) {
+        this.props.history.push(path)
+    }
+
     handleTodoListChange(id: Number, action: string) {
 
         if (action === "toTrash") {
@@ -81,17 +95,12 @@ class CreateEdit extends React.Component<{ match: any }, CreateEditState> {
 
         return (
             <div>
-                <div>
-                    <nav>
-                        <ul>
-                            <li>
-                                <Link to="/create-edit/create">Create</Link>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
                 {currentAction === 'list' ? (
-                    <ListTodo todoList={todoList} view={"CreateEdit"} onChangeTodoList={this.handleTodoListChange}/>
+                    <div>
+                        <Button variant="success" onClick={() => this.goTo("/create-edit/create")}>Create</Button>
+                        <hr/>
+                        <ListTodo todoList={todoList} view={"CreateEdit"} onChangeTodoList={this.handleTodoListChange}/>
+                    </div>
                 ) : (
                     <FormTodo action={currentAction} id={currentId}/>
                 )
@@ -103,4 +112,4 @@ class CreateEdit extends React.Component<{ match: any }, CreateEditState> {
 
 }
 
-export default CreateEdit
+export default withRouter(CreateEdit)
