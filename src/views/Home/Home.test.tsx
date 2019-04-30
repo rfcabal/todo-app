@@ -10,6 +10,11 @@ const todo: ToDo[] = [
     {id: 2, todo: "do localstorage", dueDate: "2019-05-25", completed: false}
 ];
 
+const todoTrue: ToDo[] = [
+    {id: 1, todo: "fix routes", dueDate: "2019-04-27", completed: true},
+    {id: 2, todo: "do localstorage", dueDate: "2019-05-25", completed: false}
+];
+
 localStorage.setItem("todo", JSON.stringify(todo));
 
 describe("Home Component", () => {
@@ -22,6 +27,12 @@ describe("Home Component", () => {
     test("change State todoList", () => {
         const wrapper = shallow(<Home/>)
         expect(wrapper.state("todoList")).toEqual(todo)
+    })
+
+    test("have Completed todos minimize the quantity", () => {
+        localStorage.setItem("todo", JSON.stringify(todoTrue));
+        const wrapper = shallow(<Home/>)
+        expect(wrapper.state("todoList")).toHaveLength(1)
     })
 
 })
