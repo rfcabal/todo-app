@@ -19,7 +19,7 @@ describe("Home Component", () => {
         expect(wrapper.exists()).toBe(true);
     })
 
-    test("change todo list", () => {
+    test("change State todoList", () => {
         const wrapper = shallow(<Home/>)
         expect(wrapper.state("todoList")).toEqual(todo)
     })
