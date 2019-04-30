@@ -20,14 +20,17 @@ describe("FormTodo Component", () => {
     })
     test("todo date expect to be with a DefaultValue when action is Created", () => {
         const dateNow = utils.parseDate(new Date());
+        // @ts-ignore
         const wrapper = shallow(<FormTodo.WrappedComponent action={"create"} id={0}/>)
         expect(wrapper.find("#dueDate").props().defaultValue).toEqual(dateNow);
     })
     test("todo text expect to be with a DefaultValue", () => {
+        // @ts-ignore
         const wrapper = shallow(<FormTodo.WrappedComponent action={"edit"} id={2}/>)
         expect(wrapper.find("#todo").props().defaultValue).toEqual("do localstorage");
     })
     test("todo text is echoed", () => {
+        // @ts-ignore
         const wrapper = shallow(<FormTodo.WrappedComponent action={"create"} id={0}/>)
         wrapper.find("#todo").simulate("change", {
             target: {id: "todo", value: "test"}
@@ -36,6 +39,7 @@ describe("FormTodo Component", () => {
 
     })
     test("todo date is echoed", () => {
+        // @ts-ignore
         const wrapper = shallow(<FormTodo.WrappedComponent action={"create"} id={0}/>)
         wrapper.find("#dueDate").simulate("change", {
             target: {id: "dueDate", value: "2018-01-20"}
@@ -44,6 +48,7 @@ describe("FormTodo Component", () => {
 
     })
     test("When the form is submitted the event is cancelled", () => {
+        // @ts-ignore
         const wrapper = shallow(<FormTodo.WrappedComponent action={"create"} id={0} history={{push: jest.fn()}}/>)
         let prevented = false;
         wrapper.find("Form").simulate("submit", {

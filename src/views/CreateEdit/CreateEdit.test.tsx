@@ -22,21 +22,25 @@ describe("CreateEdit Component", () => {
     })
 
     test("Update State todoList", () => {
+        // @ts-ignore
         const wrapper = shallow(<CreateEdit.WrappedComponent match={{params: {action: "list", id: 0}}}/>)
         expect(wrapper.state("todoList")).toEqual(todo)
     })
 
     test("On List Action have the List", () => {
+        // @ts-ignore
         const wrapper = shallow(<CreateEdit.WrappedComponent match={{params: {action: "list", id: 0}}}/>)
         expect(wrapper.find(ListTodo).length).toEqual(1);
     })
 
     test("On Create Action have the Form", () => {
+        // @ts-ignore
         const wrapper = shallow(<CreateEdit.WrappedComponent match={{params: {action: "create", id: 0}}}/>)
         expect(wrapper.children(FormTodo).length).toEqual(1);
     })
 
     test("On Edit Action have the Form", () => {
+        // @ts-ignore
         const wrapper = shallow(<CreateEdit.WrappedComponent match={{params: {action: "edit", id: 0}}}/>)
         expect(wrapper.children(FormTodo).length).toEqual(1);
     })
