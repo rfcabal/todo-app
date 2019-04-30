@@ -1,9 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter} from 'react-router-dom';
 import TodoTrash from './TodoTrash';
 
 it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<TodoTrash/>, div);
+    ReactDOM.render(
+        <BrowserRouter>
+            <TodoTrash/>
+        </BrowserRouter>
+        , div);
     ReactDOM.unmountComponentAtNode(div);
 });

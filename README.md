@@ -30,6 +30,11 @@
 
 ## To Build
 
-- Inside the project's folder do `npm build`
+- Inside the project's folder do `npm run build`
+
+## To Run Test
+
+- Inside the project's folder do `npm run test`
+
 
 
