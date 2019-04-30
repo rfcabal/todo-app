@@ -1,6 +1,6 @@
 import utils from "../utils/utils";
 
-function MockService(id: number, action: string, newTodo?: any) {
+function MockService(action: string, id?: number, newTodo?: any) {
 
     const stringTodo = localStorage.getItem("todo"),
         stringTrash = localStorage.getItem("trash"),
@@ -85,15 +85,15 @@ function MockService(id: number, action: string, newTodo?: any) {
 
     if (action === "completed") {
         return services.completed()
-    } else if (action === "create") {
+    } else if (action === "create" && newTodo) {
         return services.create()
-    } else if (action === "edit") {
+    } else if (action === "edit" && newTodo && id) {
         return services.update()
-    } else if (action === "toTrash") {
+    } else if (action === "toTrash" && id) {
         return services.toTrash()
-    } else if (action === "restore") {
+    } else if (action === "restore" && id) {
         return services.restore()
-    } else if (action === "delete") {
+    } else if (action === "delete" && id) {
         return services.delete()
     } else {
         return []

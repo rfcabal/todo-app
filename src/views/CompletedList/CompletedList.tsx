@@ -27,7 +27,7 @@ class CompletedList extends React.Component<any, { todoList: ToDo[] }> {
     }
 
     handleTodoListChange(id: number, action: string) {
-        const newState = MockService(id, action);
+        const newState = MockService(action, id);
         this.updateTodoList(newState);
     }
 

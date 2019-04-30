@@ -67,7 +67,7 @@ class FormTodo extends React.Component<FormTodoProps, any> {
 
     handleSubmit(event: any) {
         const {action, id} = this.props
-        MockService(id, action, this.state)
+        MockService(action, id, this.state)
         if (action === "create") this.props.history.push('/')
         event.preventDefault();
     }

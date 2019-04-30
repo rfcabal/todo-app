@@ -68,7 +68,7 @@ class CreateEdit extends React.Component<CreateEditProps, CreateEditState> {
     }
 
     handleTodoListChange(id: number, action: string) {
-        const newState = MockService(id, action);
+        const newState = MockService(action, id);
         this.updateTodoList(newState);
     }
 
