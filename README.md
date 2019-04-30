@@ -1,9 +1,5 @@
 # React Todo Example
 
-## To-do
-
-- [ ] Testing
-
 ## Dependencies
 
 - React
