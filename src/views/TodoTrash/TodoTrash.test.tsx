@@ -12,7 +12,7 @@ const todo: ToDo[] = [
 
 localStorage.setItem("trash", JSON.stringify(todo));
 
-describe("Home Component", () => {
+describe("TodoTrash Component", () => {
 
     test("renders without crashing", () => {
         const wrapper = shallow(<TodoTrash/>)

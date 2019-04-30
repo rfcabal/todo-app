@@ -17,7 +17,7 @@ const todoFalse: ToDo[] = [
 
 localStorage.setItem("todo", JSON.stringify(todo));
 
-describe("Home Component", () => {
+describe("CompletedList Component", () => {
 
     test("renders without crashing", () => {
         const wrapper = shallow(<CompletedList/>)
